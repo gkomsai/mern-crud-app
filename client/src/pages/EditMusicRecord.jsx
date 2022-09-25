@@ -35,7 +35,7 @@ const EditMusicRecord = () => {
   useEffect(() => {
     if (id) {
       // if the id is present then we getting it from the store.
-      const currentMusic = musicRecords.find((album) => album.id === id);
+      const currentMusic = musicRecords.find((album) => album._id === id);
       // if we don't find the the element then it will return the undefined, so, no meaning of setting the value, that's why I am using the if condition below here.
       if (currentMusic) {
         setMusicName(currentMusic.name);

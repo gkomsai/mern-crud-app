@@ -1,4 +1,5 @@
 import axios from "axios";
+import { loadData } from "../../utils/accessLocal";
 import {
   GET_MUSIC_RECORDS_REQUEST,
   GET_MUSIC_RECORDS_SUCCESS,
@@ -67,16 +68,26 @@ export const getMusicRecords = (params) => (dispatch) => {
   return axios
     .get(`/albums`, params)
     .then((res) => {
-      // console.log(res.data);
+      // console.log("res.data inside the action: ",res.data);
       dispatch(getMusicSuccess(res.data));
     })
     .catch((err) => dispatch(getMusicFailure(err)));
 };
 
+const token = loadData("token");
+console.log(token);
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${token}`,
+};
 export const addMusicRecords = (payload) => (dispatch) => {
   dispatch(AddMusicRequest());
-  return axios
-    .Post(`/albums/create`, payload)
+  return axios({
+    method: "post",
+    url: `/albums/create`,
+    data: payload,
+    headers: headers,
+  })
     .then((res) => {
       // console.log(res.data);
       dispatch(AddMusicSuccess(res.data));
@@ -86,18 +97,23 @@ export const addMusicRecords = (payload) => (dispatch) => {
 
 export const updateMusicRecords = (id, payload) => (dispatch) => {
   dispatch(updateMusicRequest);
-  return axios
-    .patch(`/albums/${id}`, payload)
+  return axios({
+    method: "patch",
+    url: `/albums/${id}/edit`,
+    data: payload,
+    headers: headers,
+  })
     .then((res) => dispatch(updateMusicSuccess))
     .catch((err) => dispatch(updateMusicFailure));
 };
 
 export const deleteMusicRecords = (id) => (dispatch) => {
+  console.log("inside delete fuction");
   dispatch(deleteMusicRequest());
   return axios
-    .delete(`/albums/${id}`)
+    .delete(`/albums/${id}`, { headers })
     .then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       dispatch(deleteMusicSuccess());
     })
     .catch((err) => dispatch(deleteMusicFailure(err)));
