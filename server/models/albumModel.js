@@ -7,7 +7,7 @@ const albumSchema = new mongoose.Schema(
     genre: { type: String, required: true },
     year: { type: Number },
     no_of_songs: { type: Number, required: true },
-    image_url: { type: Number, required: true },
+    image_url: { type: String, required: true },
   },
   { versionKey: false, timestamps: true }
 );
