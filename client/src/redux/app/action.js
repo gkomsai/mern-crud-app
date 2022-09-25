@@ -67,7 +67,7 @@ export const getMusicRecords = (params) => (dispatch) => {
   return axios
     .get(`/albums`, params)
     .then((res) => {
-      // console.log(res.data);
+      // console.log("res.data inside the action: ",res.data);
       dispatch(getMusicSuccess(res.data));
     })
     .catch((err) => dispatch(getMusicFailure(err)));
@@ -87,7 +87,7 @@ export const addMusicRecords = (payload) => (dispatch) => {
 export const updateMusicRecords = (id, payload) => (dispatch) => {
   dispatch(updateMusicRequest);
   return axios
-    .patch(`/albums/${id}`, payload)
+    .patch(`/albums/${id}/edit`, payload)
     .then((res) => dispatch(updateMusicSuccess))
     .catch((err) => dispatch(updateMusicFailure));
 };

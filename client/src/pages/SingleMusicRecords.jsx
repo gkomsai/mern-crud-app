@@ -16,6 +16,7 @@ import {
 const SingleMusicRecords = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id);
   const dispatch = useDispatch();
   const musicRecords = useSelector((store) => store.AppReducer.musicRecords);
   const [currentMusicAlbum, setCurrentMusicAkbun] = useState({});
@@ -32,7 +33,7 @@ const SingleMusicRecords = () => {
   useEffect(() => {
     if (id) {
       // if the id is present then we getting it from the store.
-      const currentMusic = musicRecords.find((album) => album.id === id);
+      const currentMusic = musicRecords.find((el) => el._id==id);
       // if we don't find the the element then it will return the undefined, so, no meaning of setting the value, that's why I am using the && operator here.
 
       currentMusic && setCurrentMusicAkbun(currentMusic);

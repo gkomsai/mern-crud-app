@@ -26,15 +26,10 @@ export const AuthReducer = (state = initialState, action) => {
         isError: false,
       };
     case USER_SIGNUP_SUCCESS:
-      saveData("token", payload.token);
-      saveData("user", payload.user);
-
       return {
         ...state,
         isAuthLoading: false,
         isError: false,
-        token: payload.token,
-        user: payload.user,
       };
     case USER_SIGNUP_FAILURE:
       return {
@@ -51,13 +46,12 @@ export const AuthReducer = (state = initialState, action) => {
       };
     case USER_LOGIN_SUCCESS:
       saveData("token", payload.token);
-
-      // console.log(payload);
+      saveData("user", payload.user);
       return {
         ...state,
         isAuthLoading: false,
         token: payload.token,
-
+        user: payload.user,
         isError: false,
       };
     case USER_LOGIN_FAILURE:

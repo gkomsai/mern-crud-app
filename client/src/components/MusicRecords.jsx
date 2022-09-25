@@ -18,15 +18,8 @@ const MusicRecords = () => {
 
   useEffect(() => {
     if (location.search || musicRecords.length === 0) {
-      const sortBy = searchParams.get("sortBy");
-      const queryParams = {
-        params: {
-          genre: searchParams.getAll("genre"),
-          _sort: sortBy && "year",
-          _order: sortBy,
-        },
-      };
-      dispatch(getMusicRecords(queryParams));
+  
+      dispatch(getMusicRecords());
     }
   }, [location.search]);
 
@@ -38,8 +31,8 @@ const MusicRecords = () => {
       gap="3rem"
     >
       {musicRecords.map((el) => (
-        <Box className="item-box" key={el.id}>
-          <Link to={`/albums/${el.id}`}>
+        <Box className="item-box" key={el._id}>
+          <Link to={`/albums/${el._id}`}>
             {" "}
             <Box>
               <Image width={"100%"} src={el.image_url} />

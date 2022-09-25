@@ -2,8 +2,12 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { loginFailure, loginRequest, loginSuccess } from "../redux/auth/action";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  signupFailure,
+  signupRequest,
+  signupSuccess,
+} from "../redux/auth/action";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   Flex,
   Box,
@@ -22,9 +26,9 @@ function Signup() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
-  console.log(location);
-  const comingFrom = location.state?.from?.pathname || "/";
+  // const location = useLocation();
+  // console.log(location);
+  // const comingFrom = location.state?.from?.pathname || "/login";
   // const store = useSelector((store)=>store);
   // console.log(store);
   const handleChange = (e) => {
@@ -35,18 +39,17 @@ function Signup() {
   const handleSignup = (e) => {
     e.preventDefault();
 
-    dispatch(loginRequest());
+    dispatch(signupRequest());
     axios
       .post(`/signup`, user)
       .then((res) => {
         console.log(res.data);
-        if (res.data.token) {
-          let payload = res.data;
-          dispatch(loginSuccess(payload));
-          navigate(comingFrom, { replace: true });
+        if (res.data) {
+          dispatch(signupSuccess(res.data));
+         navigate("/login");
         }
       })
-      .catch((err) => dispatch(loginFailure()));
+      .catch((err) => dispatch(signupFailure()));
   };
 
   return (
@@ -58,7 +61,7 @@ function Signup() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"4xl"}>Sign Up to your account</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
             to enjoy all of our cool{" "}
             <Text as="span" color={"blue.400"}>
@@ -109,9 +112,6 @@ function Signup() {
                   justify={"space-between"}
                 >
                   <Checkbox>Remember me</Checkbox>
-                  <Text as="span" color={"blue.400"}>
-                    Forgot password?
-                  </Text>
                 </Stack>
                 <Button
                   type="submit"
@@ -121,7 +121,7 @@ function Signup() {
                     bg: "blue.500",
                   }}
                 >
-                  Login
+                  Sign Up
                 </Button>
               </Stack>
             </Stack>

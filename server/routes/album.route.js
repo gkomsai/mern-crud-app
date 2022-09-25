@@ -1,10 +1,20 @@
 const { Router } = require("express");
 const express = require("express");
+const { checkUserAuth } = require("../middleware/authMiddleware");
 const { AlbumModel } = require("../models/AlbumModel");
 
 
 const albumRouter = Router();
 
+albumRouter.get("/", async (req, res) => {
+  try {
+    const result = await AlbumModel.find();
+    return res.status(200).send(result);
+  } catch (err) {
+    return res.status(500).json({ message: err.message, status: "Failed" });
+  }
+});
+albumRouter.use(checkUserAuth);
 albumRouter.post("/create", async (req, res) => {
   try {
     const payload = req.body;
@@ -16,14 +26,7 @@ albumRouter.post("/create", async (req, res) => {
   }
 });
 
-albumRouter.get("/", async (req, res) => {
-  try {
-    const result = await AlbumModel.find();
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).json({ message: err.message, status: "Failed" });
-  }
-});
+
 /* ----------------------For getting a single album obj by id---------------------------- */
 albumRouter.get("/:id", async (req, res) => {
   try {
@@ -36,7 +39,7 @@ albumRouter.get("/:id", async (req, res) => {
   }
 });
 
-albumRouter.patch("/:id", async (req, res) => {
+albumRouter.patch("/:id/edit", async (req, res) => {
   try {
     const _id = req.params.id;
     console.log(id, req.body);
@@ -55,6 +58,7 @@ albumRouter.delete("/:id", async (req, res) => {
     res.send("successfully deleted in the database");
   } catch (err) {
     return res.status(500).json({ message: err.message, status: "Failed" });
+}
 });
 
 module.exports = { albumRouter };
