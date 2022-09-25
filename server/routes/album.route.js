@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const express = require("express");
 const { checkUserAuth } = require("../middleware/authMiddleware");
-const { AlbumModel } = require("../models/AlbumModel");
+const { AlbumModel } = require("../models/albumModel.js");
+
 
 const albumRouter = Router();
 
