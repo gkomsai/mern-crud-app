@@ -20,7 +20,7 @@ const EditMusicRecord = () => {
         artist: artistName,
       };
       dispatch(updateMusicRecords(id, payload)).then(() =>
-        dispatch(getMusicRecords()).then(() => navigate(`/music/${id}`))
+        dispatch(getMusicRecords()).then(() => navigate(`/albums/${id}`))
       );
     }
   };
@@ -31,7 +31,6 @@ const EditMusicRecord = () => {
       dispatch(getMusicRecords());
     }
   }, [dispatch, musicRecords.length]);
-
 
   useEffect(() => {
     if (id) {
@@ -45,14 +44,12 @@ const EditMusicRecord = () => {
     }
   }, [id, musicRecords]);
 
-
   return (
     <div>
       <Heading m="4rem 0rem">Edit Page</Heading>
 
       <form action="" onSubmit={handleSubmit}>
         <VStack w="80" m="auto" spacing={8}>
-
           <Box>
             <label>Edit Music Name</label>
             <Input
@@ -76,7 +73,6 @@ const EditMusicRecord = () => {
           <Button w="100%" bg={"pink"} fontWeight="bold" type="submit">
             UPDATE
           </Button>
-          
         </VStack>
       </form>
     </div>
