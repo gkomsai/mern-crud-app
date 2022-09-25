@@ -78,7 +78,7 @@ const token = loadData("token");
 console.log(token);
 const headers = {
   "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
+  "Authorization": `Bearer ${token}`,
 };
 export const addMusicRecords = (payload) => (dispatch) => {
   dispatch(AddMusicRequest());
