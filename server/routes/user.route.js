@@ -26,12 +26,12 @@ userRouter.post("/signup", async (req, res) => {
           .status(201)
           .json({
             message: "successfully signUp in the database",
-            status: "Success",
+            status: "success",
             user: newUser,
           });
       })
       .catch((err) => {
-        res.status(400).send(err);
+        res.status(400).send({status:"error", message: err.message});
       });
   }
 });
@@ -85,7 +85,7 @@ userRouter.post("/login", async (req, res) => {
     // console.log(err);
     return res
       .status(400)
-      .send({ status: "error", message: "Unable to Login" });
+      .send({ status: "error", message: err.message });
   }
 });
 
