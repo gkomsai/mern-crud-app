@@ -12,10 +12,27 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeItemFromLocal } from "../utils/accessLocal";
+import { logoutSuccess } from "../redux/auth/action";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
+  const token = useSelector((store) => store.AuthReducer.token);
+  console.log(token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutSuccess());
+    removeItemFromLocal("token");
+    removeItemFromLocal("user");
+
+    setTimeout(() => {
+      navigate("/");
+    }, 1000);
+  };
+
   return (
     <Box>
       <Flex
@@ -70,18 +87,32 @@ export default function Navbar() {
           >
             AddAlbum
           </Button>
+          {token ? (
+            <Button
+              onClick={handleLogout}
+              fontSize={"sm"}
+              fontWeight={400}
+              bg={"blue"}
+              color={"white"}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              onClick={() => {
+                navigate("/login");
+              }}
+              fontSize={"sm"}
+              fontWeight={400}
+              bg={"blue"}
+              color={"white"}
+            >
+              Login
+            </Button>
+          )}
+
           <Button
-            onClick={() => {
-              navigate("/login");
-            }}
-            fontSize={"sm"}
-            fontWeight={400}
-            bg={"blue"}
-            color={"white"}
-          >
-            Login
-          </Button>
-          <Button
+            hidden={token}
             display={{ base: "none", md: "inline-flex" }}
             onClick={() => {
               navigate("/signup");

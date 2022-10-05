@@ -11,4 +11,9 @@ export function loadData(key){
 // function for saving the data 
 export function saveData(key,data) {
     localStorage.setItem(key, JSON.stringify(data));
+};
+
+
+export const removeItemFromLocal = (key) => {
+    return localStorage.removeItem(key);
 }
