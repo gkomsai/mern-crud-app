@@ -5,6 +5,7 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAILURE,
+  USER_LOGOUT_SUCCESS,
 } from "./actionTypes";
 
 export const signupRequest = () => {
@@ -43,4 +44,9 @@ export const loginFailure = () => {
   return {
     type: USER_LOGIN_FAILURE,
   };
+};
+
+
+export const logoutSuccess = () => {
+  return { type: USER_LOGOUT_SUCCESS };
 };

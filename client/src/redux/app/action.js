@@ -27,15 +27,15 @@ const getMusicFailure = (payload) => {
   return { type: GET_MUSIC_RECORDS_FAILURE, payload };
 };
 
-const AddMusicRequest = () => {
+const addMusicRequest = () => {
   return { type: ADD_MUSIC_RECORDS_REQUEST };
 };
 
-const AddMusicSuccess = (payload) => {
+const addMusicSuccess = (payload) => {
   return { type: ADD_MUSIC_RECORDS_SUCCESS, payload };
 };
 
-const AddMusicFailure = (payload) => {
+const addMusicFailure = (payload) => {
   return { type: ADD_MUSIC_RECORDS_FAILURE, payload };
 };
 
@@ -81,7 +81,7 @@ const headers = {
   "Authorization": `Bearer ${token}`,
 };
 export const addMusicRecords = (payload) => (dispatch) => {
-  dispatch(AddMusicRequest());
+  dispatch(addMusicRequest());
   return axios({
     method: "post",
     url: `/albums/create`,
@@ -90,9 +90,9 @@ export const addMusicRecords = (payload) => (dispatch) => {
   })
     .then((res) => {
       // console.log(res.data);
-      dispatch(AddMusicSuccess(res.data));
+      dispatch(addMusicSuccess(res.data));
     })
-    .catch((err) => dispatch(AddMusicFailure(err)));
+    .catch((err) => dispatch(addMusicFailure(err)));
 };
 
 export const updateMusicRecords = (id, payload) => (dispatch) => {
