@@ -77,8 +77,8 @@ albumRouter.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
     const { userId } = req.body;
-    const deleteTodo = await AlbumModel.findOneAndDelete({ _id: id, userId });
-    if (deleteTodo) {
+    const deleteAlbum = await AlbumModel.findOneAndDelete({ _id: id, userId });
+    if (deleteAlbum) {
       return res
         .status(200)
         .send({ status: "success", message: "music successfully deleted" });
@@ -89,7 +89,7 @@ albumRouter.delete("/:id", async (req, res) => {
       });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message, status: "Failed" });
+    return res.status(500).json({ message: err.message, status: "error" });
   }
 });
 
