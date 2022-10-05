@@ -20,17 +20,16 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
+import { notify } from "../utils/extraFunction";
 
 function Signup() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const location = useLocation();
-  // console.log(location);
-  // const comingFrom = location.state?.from?.pathname || "/login";
-  // const store = useSelector((store)=>store);
-  // console.log(store);
+  const toast = useToast();
+
   const handleChange = (e) => {
     let { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -43,13 +42,17 @@ function Signup() {
     axios
       .post(`/signup`, user)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data) {
           dispatch(signupSuccess(res.data));
-         navigate("/login");
+          notify(toast, res.data.message, "success");
+          navigate("/login");
         }
       })
-      .catch((err) => dispatch(signupFailure()));
+      .catch((err) => {
+        dispatch(signupFailure());
+        notify(toast, err.response.data.message, "error");
+      });
   };
 
   return (

@@ -16,18 +16,19 @@ import {
   Heading,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
+import { notify } from "../utils/extraFunction";
 
 function Login() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const toast = useToast();
   console.log(location);
   const comingFrom = location.state?.from?.pathname || "/";
 
-  // const store = useSelector((store)=>store);
-  // console.log(store);
   const handleChange = (e) => {
     let { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -40,14 +41,18 @@ function Login() {
     axios
       .post(`/login`, user)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.token) {
           let payload = res.data;
           dispatch(loginSuccess(payload));
-          navigate(comingFrom, { replace: true }); //here replace true is telling that don't store the login page on the top of the stack,so that after login succesfull the will visit the page and after that if he click to the back button for going to the previous page then don't show him the login page again.
+          notify(toast, res.data.message, "success");
+          navigate(comingFrom, { replace: true });
         }
       })
-      .catch((err) => dispatch(loginFailure()));
+      .catch((err) => {
+        dispatch(loginFailure());
+        notify(toast, err.response.data.message, "error");
+      });
   };
 
   return (

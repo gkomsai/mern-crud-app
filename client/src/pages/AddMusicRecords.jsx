@@ -19,6 +19,9 @@ const AddMusicRecords = () => {
       dispatch(getMusicRecords()).then(() => navigate(`/`))
     );
   };
+
+
+  
   return (
     <div>
       <Heading m="4rem 0rem">Add Music Records</Heading>
