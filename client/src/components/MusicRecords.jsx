@@ -28,7 +28,15 @@ const handleDelete = (id)=>{
 }
   useEffect(() => {
     if (location.search || musicRecords.length === 0) {
-      dispatch(getMusicRecords());
+      const sortBy = searchParams.get("sortBy");
+      const queryParams = {
+        params: {
+          genre: searchParams.getAll("genre"),
+          _sort: sortBy && "year",
+          _order: sortBy,
+        },
+      };
+      dispatch(getMusicRecords(queryParams));
     }
   }, [location.search]);
 

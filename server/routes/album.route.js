@@ -8,9 +8,13 @@ const albumRouter = Router();
 albumRouter.get("/", async (req, res) => {
   try {
     console.log("query", req.query);
-    if (req.query) {
-      const result = await AlbumModel.find(req.query);
-      return res.status(200).send(result);
+    const { _sort, _order, ...rest } = req.query;
+    if (_sort && _order) {
+      const order= _order==="asc" ? 1 : -1
+      if (req.query) {
+        const result = await AlbumModel.find(rest).sort({ year: order });
+        return res.status(200).send(result);
+      }
     } else {
       const result = await AlbumModel.find();
       if (result.length > 0) {
@@ -22,6 +26,7 @@ albumRouter.get("/", async (req, res) => {
       }
     }
   } catch (error) {
+    console.log({error})
     res.status(400).json({ message: "Something went wrong", status: "error" });
   }
 });
