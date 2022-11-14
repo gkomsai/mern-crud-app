@@ -1,4 +1,12 @@
-import { Box, Button, Heading, Input, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Container,
+  Heading,
+  Input,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,11 +15,12 @@ import { getMusicRecords, updateMusicRecords } from "../redux/app/action";
 const EditMusicRecord = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const toast = useToast();
   const musicRecords = useSelector((store) => store.AppReducer.musicRecords);
   const [musicName, setMusicName] = useState("");
   const [artistName, setArtistName] = useState("");
   const navigate = useNavigate();
-
+  const { token } = useSelector((store) => store.AuthReducer);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (musicName && artistName) {
@@ -19,7 +28,7 @@ const EditMusicRecord = () => {
         name: musicName,
         artist: artistName,
       };
-      dispatch(updateMusicRecords(id, payload)).then(() =>
+      dispatch(updateMusicRecords(id, payload, token, toast)).then(() =>
         dispatch(getMusicRecords()).then(() => navigate(`/albums/${id}`))
       );
     }
@@ -45,37 +54,37 @@ const EditMusicRecord = () => {
   }, [id, musicRecords]);
 
   return (
-    <div>
-      <Heading m="4rem 0rem">Edit Page</Heading>
-
+    <Container
+      border={"1px solid #edf2f7"}
+      mt={["60px", "80px"]}
+      borderRadius={"2%"}
+      p={["10px", "20px", "30px"]}
+      maxW={"400px"}
+      boxShadow="dark-lg"
+    >
       <form action="" onSubmit={handleSubmit}>
-        <VStack w="80" m="auto" spacing={8}>
-          <Box>
-            <label>Edit Music Name</label>
-            <Input
-              type="text"
-              value={musicName}
-              name="name"
-              onChange={(e) => setMusicName(e.target.value)}
-            />
-          </Box>
-
-          <Box>
-            <label>Edit Artist Name</label>
-            <Input
-              type="text"
-              value={artistName}
-              name="artist"
-              onChange={(e) => setArtistName(e.target.value)}
-            />
-          </Box>
-
+        <VStack gap={"10px"}>
+          <Heading>Update Album</Heading>
+          <label>Edit Music Name</label>
+          <Input
+            type="text"
+            value={musicName}
+            name="name"
+            onChange={(e) => setMusicName(e.target.value)}
+          />
+          <label>Edit Artist Name</label>
+          <Input
+            type="text"
+            value={artistName}
+            name="artist"
+            onChange={(e) => setArtistName(e.target.value)}
+          />
           <Button w="100%" bg={"pink"} fontWeight="bold" type="submit">
             UPDATE
           </Button>
         </VStack>
       </form>
-    </div>
+    </Container>
   );
 };
 

@@ -33,7 +33,7 @@ const SingleMusicRecords = () => {
   useEffect(() => {
     if (id) {
       // if the id is present then we getting it from the store.
-      const currentMusic = musicRecords.find((el) => el._id==id);
+      const currentMusic = musicRecords.find((el) => el._id == id);
       // if we don't find the the element then it will return the undefined, so, no meaning of setting the value, that's why I am using the && operator here.
 
       currentMusic && setCurrentMusicAkbun(currentMusic);
@@ -42,7 +42,12 @@ const SingleMusicRecords = () => {
 
   return (
     <Box mt="5rem">
-      <Flex m="4rem 2rem" justifyContent={"space-evenly"} alignItems="center">
+      <Flex
+        m="4rem 2rem"
+        direction={{ base: "column", md: "row" }}
+        justifyContent={"space-evenly"}
+        alignItems="center"
+      >
         <Box
           cursor={"pointer"}
           transition="all 2s linear"

@@ -9,10 +9,10 @@ const checkUserAuth = async (req, res, next) => {
   const token = req.headers.authorization.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET_KEY, function (err, decoded) {
       if (err) {
-        res.status(401).send("Something went wrong, please login again");
+        res.status(401).send({message:"Please Login to complete the task"});
       } else {
         req.body.userId = decoded.userId; 
-        console.log("auth-middleware reqBody: ", req.body); 
+        // console.log("auth-middleware reqBody: ", req.body); 
         next();
       }
     });
