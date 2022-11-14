@@ -26,7 +26,7 @@ function Login() {
   const dispatch = useDispatch();
   const location = useLocation();
   const toast = useToast();
-  console.log(location);
+  // console.log(location);
   const comingFrom = location.state?.from?.pathname || "/";
 
   const handleChange = (e) => {

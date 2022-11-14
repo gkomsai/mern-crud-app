@@ -6,10 +6,13 @@ import FilterSort from "../components/FilterSort";
 const Home = () => {
   return (
     <>
-      <Box w="20%" mt="1rem">
+      <Box w="20%" mt="1rem" ml="20px">
         <FilterSort />
       </Box>
-      <Box w="80%" m="auto">
+      <Box
+        w={{ base: "80%", sm: "90%", md: "90%", lg: "85%", xl: "80%" }}
+        m="auto"
+      >
         <MusicRecords />
       </Box>
     </>
