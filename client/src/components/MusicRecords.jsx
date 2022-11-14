@@ -8,6 +8,7 @@ import {
   Select,
   SimpleGrid,
   Text,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
@@ -19,26 +20,31 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import Loading from "./Loading";
+import Error from "./Error";
 
 const MusicRecords = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(6);
-
 
   const { musicRecords, totalPages, isLoading, isError } = useSelector(
     (store) => store.AppReducer
   );
-  // console.log(musicRecords);
+  const { token } = useSelector((store) => store.AuthReducer);
 
   const [searchParams] = useSearchParams();
   const location = useLocation();
 
-  // console.log(location);
   const handleDelete = (id) => {
-    dispatch(deleteMusicRecords(id)).then(() => dispatch(getMusicRecords()));
+    dispatch(deleteMusicRecords(id, token, toast));
+    //   .then(() =>
+    //   dispatch(getMusicRecords()) // if I call this get Method here then even  the our delete method got error but this getMusicRecord() is get called, which is the unnecessary call so moved it into the the action file.
+    // );
   };
+
   useEffect(() => {
     if (location.search || musicRecords.length === 0) {
       const sortBy = searchParams.get("sortBy");
@@ -51,23 +57,32 @@ const MusicRecords = () => {
           limit: limit,
         },
       };
-      dispatch(getMusicRecords(queryParams));
+      dispatch(getMusicRecords(queryParams, token, toast));
     }
   }, [location.search, page, limit]);
 
-  return (
+
+  
+  return isLoading ? (
+    <Loading />
+  ) : isError ? (
+    <Error />
+  ) : (
     <Box>
       <Flex
         mt="-35px"
         mb={"4rem"}
         w="100%"
         justify={"flex-end"}
-       
-        gap={{base:".1rem",sm:"1rem"}}
-        fontSize={{base:"5px", md:"16px"}}
+        gap={{ base: ".1rem", sm: "1rem" }}
+        fontSize={{ base: "5px", md: "16px" }}
         alignItems="center"
       >
-        <Button size={{base:"sm",sm:"md"}} disabled={page === 1} onClick={() => setPage(page - 1)}>
+        <Button
+          size={{ base: "sm", sm: "md" }}
+          disabled={page === 1}
+          onClick={() => setPage(page - 1)}
+        >
           PREV
         </Button>
         <Text
@@ -80,14 +95,14 @@ const MusicRecords = () => {
           {page}{" "}
         </Text>
         <Button
-          size={{base:"sm"}}
+          size={{ base: "sm" }}
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
           NEXT
         </Button>
         <Select
-          w={{base:"2rem", md:"8rem"}}
+          w={{ base: "2rem", md: "8rem" }}
           placeholder="Apply Limit"
           onChange={(e) => setLimit(e.target.value)}
         >
@@ -105,11 +120,16 @@ const MusicRecords = () => {
       >
         {musicRecords.map((el) => (
           <Box key={el._id} boxShadow="dark-lg" p="20px" minH={"500px"}>
-             <VStack justifyContent={"center"} align={"flex-start"}>
-              <Link to={`/albums/${el._id}`}>
-                <Image objectFit={"cover"} h="300px" src={el.image_url} />{" "}
-              </Link>
-           
+            <VStack justifyContent={"center"} align={"flex-start"}>
+              <Box
+                transition="all 2s linear"
+                _hover={{ transform: "scale(1.1)" }}
+              >
+                <Link to={`/albums/${el._id}`}>
+                  <Image objectFit={"cover"} h="300px" src={el.image_url} />{" "}
+                </Link>
+              </Box>
+
               <Text fontWeight={"bold"} noOfLines="1">
                 {" "}
                 SongName:{" "}
@@ -142,7 +162,6 @@ const MusicRecords = () => {
                   {el.year}{" "}
                 </Text>{" "}
               </Text>
-          
             </VStack>
             <HStack justifyContent={"space-between"} mt="1.5rem">
               <Button onClick={() => navigate(`/albums/${el._id}`)}>
@@ -156,5 +175,6 @@ const MusicRecords = () => {
     </Box>
   );
 };
+  
 
 export default MusicRecords;

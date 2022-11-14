@@ -37,7 +37,6 @@ function Signup() {
 
   const handleSignup = (e) => {
     e.preventDefault();
-
     dispatch(signupRequest());
     axios
       .post(`/signup`, user)
