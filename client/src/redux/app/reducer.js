@@ -5,6 +5,7 @@ import {
 } from "./actionTypes";
 export const initState = {
   musicRecords: [],
+  totalPages:"",
   isLoading: false,
   isError: false,
 };
@@ -17,7 +18,8 @@ export const AppReducer = (state = initState, { type, payload }) => {
     case GET_MUSIC_RECORDS_SUCCESS:
       return {
         ...state,
-        musicRecords: payload,
+        musicRecords: payload.result,
+        totalPages:payload.totalPages,
         isLoading: false,
         isError: false,
       };
