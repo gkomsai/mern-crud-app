@@ -9,32 +9,30 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  useToast,
+  Image,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItemFromLocal } from "../utils/accessLocal";
 import { logoutSuccess } from "../redux/auth/action";
-
+import { notify } from "../utils/extraFunction";
+import logo from "../assets/logo.png";
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
   const token = useSelector((store) => store.AuthReducer.token);
-  // console.log(token);
+  const toast = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
-    removeItemFromLocal("token");
-    removeItemFromLocal("user");
-
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
+    notify(toast, "Logout succesfully", "success");
+    navigate("/");
   };
 
   return (
-    <Box>
+    <Box position={"sticky"} top="0" left="0" zIndex={"5"}>
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}
@@ -61,13 +59,18 @@ export default function Navbar() {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <Text
+          <Box
+            bg="black"
+            p="0"
+            borderRadius={"50%"}
+            ml={{ base: "0px", md: "50px" }}
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            color={useColorModeValue("gray.800", "white")}
           >
-            <Link to="/"> Music app</Link>
-          </Text>
+            <Link to="/">
+              {" "}
+              <Image w="70px" src={logo} alt="" />{" "}
+            </Link>
+          </Box>
         </Flex>
 
         <Stack

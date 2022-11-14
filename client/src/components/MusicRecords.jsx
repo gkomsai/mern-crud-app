@@ -20,6 +20,8 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import Loading from "./Loading";
+import Error from "./Error";
 
 const MusicRecords = () => {
   const dispatch = useDispatch();
@@ -58,8 +60,14 @@ const MusicRecords = () => {
       dispatch(getMusicRecords(queryParams, token, toast));
     }
   }, [location.search, page, limit]);
- 
-  return (
+
+
+  
+  return isLoading ? (
+    <Loading />
+  ) : isError ? (
+    <Error />
+  ) : (
     <Box>
       <Flex
         mt="-35px"
@@ -167,5 +175,6 @@ const MusicRecords = () => {
     </Box>
   );
 };
+  
 
 export default MusicRecords;
