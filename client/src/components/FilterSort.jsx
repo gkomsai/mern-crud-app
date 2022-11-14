@@ -12,7 +12,6 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useSearchParams } from "react-router-dom";
 
 const FilterSort = () => {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const firstField = React.useRef();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -49,8 +48,8 @@ const FilterSort = () => {
 
   return (
     <>
-      <Button leftIcon={<AddIcon />} colorScheme="teal" onClick={onOpen}>
-      Filter and Sort
+      <Button leftIcon={<AddIcon />}  size={{base:"sm",sm:"md"}}   fontSize={{base:"10px", md:"16px"}} colorScheme="teal" onClick={onOpen}>
+        Filter and Sort
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -61,9 +60,7 @@ const FilterSort = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader borderBottomWidth="1px">
-        Filter by 
-          </DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Filter by</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing="24px">

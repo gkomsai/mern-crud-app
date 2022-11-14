@@ -19,7 +19,7 @@ import { logoutSuccess } from "../redux/auth/action";
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
   const token = useSelector((store) => store.AuthReducer.token);
-  console.log(token);
+  // console.log(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ export default function Navbar() {
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
-        px={{ base: 4 , md: "8"}}
+        px={{ base: 4, md: "8" }}
         borderBottom={1}
         borderStyle={"solid"}
         borderColor={useColorModeValue("gray.200", "gray.900")}
@@ -66,8 +66,7 @@ export default function Navbar() {
             fontFamily={"heading"}
             color={useColorModeValue("gray.800", "white")}
           >
-            <Link to = "/">  Music app</Link>
-           
+            <Link to="/"> Music app</Link>
           </Text>
         </Flex>
 
@@ -82,6 +81,7 @@ export default function Navbar() {
               navigate("/albums/create");
             }}
             fontSize={"sm"}
+            size={{ base: "sm", sm: "md" }}
             fontWeight={400}
             bg={"blue"}
             color={"white"}
@@ -92,6 +92,7 @@ export default function Navbar() {
             <Button
               onClick={handleLogout}
               fontSize={"sm"}
+              size={{ base: "sm", sm: "md" }}
               fontWeight={400}
               bg={"blue"}
               color={"white"}
@@ -104,6 +105,7 @@ export default function Navbar() {
                 navigate("/login");
               }}
               fontSize={"sm"}
+              size={{ base: "sm", sm: "md" }}
               fontWeight={400}
               bg={"blue"}
               color={"white"}
@@ -122,9 +124,6 @@ export default function Navbar() {
             fontWeight={600}
             color={"white"}
             bg={"blue"}
-            _hover={{
-              bg: "pink.300",
-            }}
           >
             Sign Up
           </Button>

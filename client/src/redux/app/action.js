@@ -108,12 +108,12 @@ export const updateMusicRecords = (id, payload) => (dispatch) => {
 };
 
 export const deleteMusicRecords = (id) => (dispatch) => {
-  console.log("inside delete fuction");
+  // console.log("inside delete fuction");
   dispatch(deleteMusicRequest());
   return axios
     .delete(`/albums/${id}`, { headers })
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       dispatch(deleteMusicSuccess());
     })
     .catch((err) => dispatch(deleteMusicFailure(err)));
