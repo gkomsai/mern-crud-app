@@ -12,7 +12,7 @@ const checkUserAuth = async (req, res, next) => {
         res.status(401).send({message:"Please Login to complete the task"});
       } else {
         req.body.userId = decoded.userId; 
-        // console.log("auth-middleware reqBody: ", req.body); 
+        console.log("auth-middleware reqBody: ", req.body); 
         next();
       }
     });

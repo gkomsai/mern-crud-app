@@ -1,4 +1,10 @@
-/* ------------------ SignUp Logic----------------------------------- */ 
+const { UserModel } = require("../models/userModel");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+
+ /* ------------------ SignUp Logic----------------------------------- */
 
 const signupController = async (req, res) => {
     const { email, password } = req.body;

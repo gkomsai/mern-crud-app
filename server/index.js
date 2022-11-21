@@ -12,9 +12,13 @@ app.use(express.json());
 app.use(cors());
 
 
-app.use("/", userRouter); //  by putting this /user userRouter logic will be applied only for the /user route
+app.use("/", userRouter);
 app.use("/albums", albumRouter);
 
+
+app.get("/", async (req, res) => {
+  return res.send("Welcome to music app backend server home page")
+})
 
 app.listen(port, async () => {
   try {
