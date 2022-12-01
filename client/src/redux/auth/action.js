@@ -46,7 +46,6 @@ export const loginFailure = () => {
   };
 };
 
-
 export const logoutSuccess = () => {
   return { type: USER_LOGOUT_SUCCESS };
 };
