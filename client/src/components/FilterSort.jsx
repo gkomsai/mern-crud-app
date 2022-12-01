@@ -13,11 +13,11 @@ import { useSearchParams } from "react-router-dom";
 
 const FilterSort = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const firstField = React.useRef();
+
   const [searchParams, setSearchParams] = useSearchParams();
   const initialGenreParams = searchParams.getAll("genre");
-  const initialSortParams = searchParams.get("sortBy"); //since we have only one initialSort params i.e radio type so, we are using .get only in this case
-  // console.log(initialSortParams);
+  const initialSortParams = searchParams.get("sortBy");
+
   const [category, setCategory] = useState(initialGenreParams || []);
   const [sortBy, setSortBy] = useState(initialSortParams || "");
 
@@ -25,38 +25,36 @@ const FilterSort = () => {
     const option = e.target.value;
     let newCategory = [...category];
     if (category.includes(option)) {
-      //if the option is already present in the category, remove it
       newCategory.splice(newCategory.indexOf(option), 1);
     } else {
-      //else add it in the category array
       newCategory.push(option);
     }
     setCategory(newCategory);
   };
-  // console.log(category);
 
   const handleSortBy = (e) => {
     setSortBy(e.target.value);
   };
 
   useEffect(() => {
-    //if the category changes then reflect it on the URL search as well & for this we are giving the category= categoryname
     if (category || sortBy) {
       setSearchParams({ genre: category, sortBy: sortBy });
     }
-  }, [category, setSearchParams, sortBy]);
+  }, [category, sortBy]);
 
   return (
     <>
-      <Button leftIcon={<AddIcon />}  size={{base:"sm",sm:"md"}}   fontSize={{base:"10px", md:"16px"}} colorScheme="teal" onClick={onOpen}>
+      <Button
+        leftIcon={<AddIcon />}
+        size={{ base: "sm", sm: "md" }}
+        fontSize={{ base: "10px", md: "16px" }}
+        colorScheme="teal"
+        onClick={onOpen}
+      >
         Filter and Sort
       </Button>
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        initialFocusRef={firstField}
-        onClose={onClose}
-      >
+      
+      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />

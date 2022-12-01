@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  color,
   Flex,
   HStack,
   Image,
@@ -11,19 +10,15 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { deleteMusicRecords, getMusicRecords } from "../redux/app/action";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Loading from "./Loading";
 import Error from "./Error";
+import { useMemo } from "react";
 
-const MusicRecords = () => {
+const MusicRecords = ({ CurrentLocation }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
@@ -36,17 +31,23 @@ const MusicRecords = () => {
   const { token } = useSelector((store) => store.AuthReducer);
 
   const [searchParams] = useSearchParams();
-  const location = useLocation();
+  let location = useLocation();
 
   const handleDelete = (id) => {
     dispatch(deleteMusicRecords(id, token, toast));
-    //   .then(() =>
-    //   dispatch(getMusicRecords()) // if I call this get Method here then even  the our delete method got error but this getMusicRecord() is get called, which is the unnecessary call so moved it into the the action file.
-    // );
   };
+  let fetchData;
+  useMemo(() => {
+    fetchData = location.search;
+  }, [location.search, page, limit]);
 
   useEffect(() => {
-    if (location.search || musicRecords.length === 0) {
+    let isCancelled = false;
+    if (
+      fetchData ||
+      (musicRecords.length === 0 && CurrentLocation === "homePage")
+    ) {
+      console.log("inside the useEffer", musicRecords.length, location.search);
       const sortBy = searchParams.get("sortBy");
       const queryParams = {
         params: {
@@ -57,12 +58,17 @@ const MusicRecords = () => {
           limit: limit,
         },
       };
-      dispatch(getMusicRecords(queryParams, token, toast));
+      if (!isCancelled) {
+        dispatch(getMusicRecords(queryParams, token, toast));
+      }
     }
-  }, [location.search, page, limit]);
-
+    return () => {
+      isCancelled = true;
+    };
+  }, [location.search, musicRecords.length, page, limit]);
 
   
+
   return isLoading ? (
     <Loading />
   ) : isError ? (
@@ -107,8 +113,8 @@ const MusicRecords = () => {
           onChange={(e) => setLimit(e.target.value)}
         >
           <option value="6">6/page</option>
-          <option value="10">10/page</option>
-          <option value="20">20/page</option>
+          <option value="12">12/page</option>
+          <option value="18">18/page</option>
         </Select>
       </Flex>
 
@@ -119,15 +125,34 @@ const MusicRecords = () => {
         gap="3rem"
       >
         {musicRecords.map((el) => (
-          <Box key={el._id} boxShadow="dark-lg" p="20px" minH={"500px"}>
+          <Box
+            key={el._id}
+            boxShadow="dark-lg"
+            borderRadius={"20px"}
+            p="20px"
+            minH={"500px"}
+          >
             <VStack justifyContent={"center"} align={"flex-start"}>
               <Box
-                transition="all 2s linear"
-                _hover={{ transform: "scale(1.1)" }}
+                alignSelf={"center"}
+                borderRadius={"20px"}
+                w="100%"
+                height={{
+                  base: "15rem",
+                  sm: "20rem",
+                  md: "15rem",
+                  lg: "20rem",
+                }}
+                overflow="hidden"
               >
-                <Link to={`/albums/${el._id}`}>
-                  <Image objectFit={"cover"} h="300px" src={el.image_url} />{" "}
-                </Link>
+                <Image
+                  w="900px"
+                  h="300px"
+                  transition="all 3s linear"
+                  _hover={{ transform: "scale(1.2)" }}
+                  src={el.image_url}
+                  cursor="pointer"
+                />{" "}
               </Box>
 
               <Text fontWeight={"bold"} noOfLines="1">
@@ -164,7 +189,7 @@ const MusicRecords = () => {
               </Text>
             </VStack>
             <HStack justifyContent={"space-between"} mt="1.5rem">
-              <Button onClick={() => navigate(`/albums/${el._id}`)}>
+              <Button onClick={() => navigate(`/albums/${el._id}/edit`)}>
                 Edit
               </Button>
               <Button onClick={() => handleDelete(el._id)}>Delete</Button>
@@ -175,6 +200,5 @@ const MusicRecords = () => {
     </Box>
   );
 };
-  
 
-export default MusicRecords;
+export default React.memo(MusicRecords);

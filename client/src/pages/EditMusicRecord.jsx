@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   Heading,
@@ -21,6 +20,9 @@ const EditMusicRecord = () => {
   const [artistName, setArtistName] = useState("");
   const navigate = useNavigate();
   const { token } = useSelector((store) => store.AuthReducer);
+
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (musicName && artistName) {
@@ -29,30 +31,35 @@ const EditMusicRecord = () => {
         artist: artistName,
       };
       dispatch(updateMusicRecords(id, payload, token, toast)).then(() =>
-        dispatch(getMusicRecords()).then(() => navigate(`/albums/${id}`))
+        navigate(`/`)
       );
     }
   };
 
   useEffect(() => {
-    // note we can do the api Request and get the data based on the id but,if my the data is already present in the store then why doibg the api request. if the  user refresh then the store data will ve gone then, only to show the data we are making the api request. this will saves the money also.
     if (musicRecords.length === 0) {
-      dispatch(getMusicRecords());
+      dispatch(getMusicRecords(...Array(2),toast));
     }
-  }, [dispatch, musicRecords.length]);
+  }, [dispatch,]);
+
 
   useEffect(() => {
+    let isCancelled = false;
     if (id) {
-      // if the id is present then we getting it from the store.
       const currentMusic = musicRecords.find((album) => album._id === id);
-      // if we don't find the the element then it will return the undefined, so, no meaning of setting the value, that's why I am using the if condition below here.
-      if (currentMusic) {
+
+      if (currentMusic && !isCancelled) {
         setMusicName(currentMusic.name);
         setArtistName(currentMusic.artist);
       }
     }
+    return () => {
+      isCancelled = true;
+    }
   }, [id, musicRecords]);
 
+
+  
   return (
     <Container
       border={"1px solid #edf2f7"}

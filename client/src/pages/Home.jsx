@@ -13,7 +13,7 @@ const Home = () => {
         w={{ base: "80%", sm: "90%", md: "90%", lg: "85%", xl: "80%" }}
         m="auto"
       >
-        <MusicRecords />
+        <MusicRecords CurrentLocation="homePage" />
       </Box>
     </>
   );

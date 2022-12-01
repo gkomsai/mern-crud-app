@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addMusicRecords, getMusicRecords } from "../redux/app/action";
+import { addMusicRecords} from "../redux/app/action";
 
 const AddMusicRecords = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const AddMusicRecords = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addMusicRecords(musicRecord, token, toast)).then(() =>
-      dispatch(getMusicRecords()).then(() => navigate(`/`))
+      navigate(`/`)
     );
   };
 

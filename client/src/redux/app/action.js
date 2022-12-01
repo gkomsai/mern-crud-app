@@ -64,7 +64,7 @@ const deleteMusicFailure = (payload) => {
   return { type: DELETE_MUSIC_RECORDS_FAILURE, payload };
 };
 
-export const getMusicRecords = (params, toast) => (dispatch) => {
+export const getMusicRecords = (params, token, toast) => (dispatch) => {
   dispatch(getMusicRequest());
   return axios
     .get(`/albums`, params)
@@ -73,6 +73,7 @@ export const getMusicRecords = (params, toast) => (dispatch) => {
       // notify(toast, "Album Fetched successfully", "success");
     })
     .catch((err) => {
+      // console.log(err.response.data.message);
       dispatch(getMusicFailure(err));
       notify(toast, err.response.data.message, "error");
     });
@@ -86,7 +87,7 @@ export const addMusicRecords = (payload, token, toast) => (dispatch) => {
     data: payload,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   })
     .then((res) => {
@@ -108,7 +109,7 @@ export const updateMusicRecords = (id, payload, token, toast) => (dispatch) => {
     data: payload,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   })
     .then((res) => {
@@ -133,9 +134,7 @@ export const deleteMusicRecords = (id, token, toast) => (dispatch) => {
     .then((res) => {
       dispatch(deleteMusicSuccess());
       notify(toast, res.data.message, "success");
-    }).then(() =>
-    dispatch(getMusicRecords())
-  )
+    })
     .catch((err) => {
       notify(toast, err.response.data.message, "error");
       dispatch(deleteMusicFailure(err));
