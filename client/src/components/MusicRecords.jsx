@@ -47,7 +47,7 @@ const MusicRecords = ({ CurrentLocation }) => {
       fetchData ||
       (musicRecords.length === 0 && CurrentLocation === "homePage")
     ) {
-      console.log("inside the useEffer", musicRecords.length, location.search);
+
       const sortBy = searchParams.get("sortBy");
       const queryParams = {
         params: {
@@ -67,7 +67,7 @@ const MusicRecords = ({ CurrentLocation }) => {
     };
   }, [location.search, musicRecords.length, page, limit]);
 
-  
+
 
   return isLoading ? (
     <Loading />
@@ -134,6 +134,7 @@ const MusicRecords = ({ CurrentLocation }) => {
           >
             <VStack justifyContent={"center"} align={"flex-start"}>
               <Box
+                 mb="10px"
                 alignSelf={"center"}
                 borderRadius={"20px"}
                 w="100%"
@@ -148,6 +149,7 @@ const MusicRecords = ({ CurrentLocation }) => {
                 <Image
                   w="900px"
                   h="300px"
+                  borderRadius={"20px"}
                   transition="all 3s linear"
                   _hover={{ transform: "scale(1.2)" }}
                   src={el.image_url}

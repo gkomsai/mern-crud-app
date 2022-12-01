@@ -10,7 +10,7 @@ const Home = () => {
         <FilterSort />
       </Box>
       <Box
-        w={{ base: "80%", sm: "90%", md: "90%", lg: "85%", xl: "80%" }}
+        w={{ base: "80%", sm: "70%", md: "90%", lg: "85%", xl: "80%" }}
         m="auto"
       >
         <MusicRecords CurrentLocation="homePage" />
