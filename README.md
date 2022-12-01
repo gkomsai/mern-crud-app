@@ -37,7 +37,7 @@
 
 <h1>View Deployment</h1>
 </hr>
-<h4>Checkout live website: https://indian-social-media.vercel.app/</h4>
+<h4>Checkout live website: https://mern-stack-music-app.vercel.app/</h4>
 </hr>
 
 
